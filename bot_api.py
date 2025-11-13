@@ -50,3 +50,24 @@ async def messages(req: Request):
             "type": "message",
             "text": "No Tableau license request detected."
         }
+        
+        
+        import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@app.post("/api/messages")
+async def messages(req: Request):
+    body = await req.json()
+    logger.info(f"Incoming request: {body}")
+    user_input = body.get("text", "")
+    if is_triggered(user_input):
+        return {
+            "type": "message",
+            "text": FOLLOW_UP_RESPONSE
+        }
+    else:
+        return {
+            "type": "message",
+            "text": "No Tableau license request detected."
+        }
